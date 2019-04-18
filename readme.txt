@@ -1,7 +1,11 @@
-1.安装物理环境
-    	miniconda2.7
-	Chrome
-	driver
+1.安装物理环境(安装文档及安装说明)
+    	miniconda2.7  ---> python环境
+	Chrome        ---> 浏览器
+	driver	      ---> 浏览器驱动器
+
+	链接：https://pan.baidu.com/s/1ivQXGjUwV1EDxFrlnmKfCg 
+提取码：aici 
+
 
 2.安装三方库
 	pip install -r requirements.txt

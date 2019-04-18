@@ -446,7 +446,7 @@ def test_order():
                 timeout=20)
     login_result = nike.login(url=url)
     if login_result.get("status", -1) == 1:
-        print(json.dumps(nike.order(url=url_order), ensure_ascii=False))
+        print(json.dumps(nike.order(url=url_order), ensure_ascii=False).encode("utf8"))
     else:
         print(login_result)
     nike.close()
