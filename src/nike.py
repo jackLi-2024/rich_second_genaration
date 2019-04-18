@@ -40,7 +40,7 @@ class Nike(object):
         self.browser = Browser.Browser(proxies=proxies, headless=headless, timeout=timeout,
                                        executable_path=executable_path,
                                        browser_type=browser_type)
-        self.browser.browser.fullscreen_window()
+        self.browser.browser.set_window_size(1366, 768)
 
     def close(self):
         self.browser.close()
@@ -50,19 +50,12 @@ class Nike(object):
             # https://www.nike.com/cn/launch/t/air-max-95-premium-throwback-future/
 
             self.browser.get(url=url)
-            try:
-                # 应对页面变小，转换为手机页面模式
-
-                self.browser.wait_for_element_loaded(type_name="g72-menu", elem_type=By.CLASS_NAME)
-                menu = self.browser.find_element("g72-menu", By.CLASS_NAME)
-                self.browser.click_elem(menu)
-            except Exception as e:
-                logging.exception(str(e))
-
             self.browser.wait_for_element_loaded(type_name="join-log-in", elem_type=By.CLASS_NAME)
             join_in_elem = self.browser.find_element("join-log-in", By.CLASS_NAME)
             self.browser.click_elem(join_in_elem)
-            self.browser.wait_for_element_loaded(type_name="verifyMobileNumber", elem_type=By.NAME)
+
+            self.browser.wait_for_element_loaded(type_name="verifyMobileNumber",
+                                                 elem_type=By.NAME)
             user = self.browser.find_element("verifyMobileNumber", By.NAME)
             pwd = self.browser.find_element("password", By.NAME)
             self.browser.send_keys(user, self.username)
@@ -462,4 +455,4 @@ def test_regist():
 
 
 if __name__ == '__main__':
-    test_order()
+    test_address()
