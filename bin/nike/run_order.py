@@ -23,9 +23,17 @@ from lib.util import read_file
 from lib.util import write_file
 from lib.util import mkdir_log
 from lib.util import result_to_file
+from lib.util import Email
 
 
 def target(username, password, parames):
+    email_smtpserver = parames.get("email").get("email_smtpserver")
+    email_port = parames.get("email").get("email_port")
+    email_sender = parames.get("email").get("email_sender")
+    email_password = parames.get("email").get("email_password")
+    email_receiver = json.loads(parames.get("email").get("email_receiver"))
+    email_subject = parames.get("email").get("email_subject")
+
     url = random.choice(json.loads(parames.get("url").get("product")))
     url_order = parames.get("url").get("order")
     browser_type = parames.get("browser").get("browser_type")
@@ -38,13 +46,21 @@ def target(username, password, parames):
     result = nike.login(url=url)
     if result.get("status", -1) == 1:
         result = nike.order(url=url_order)
+        if result.get("status", -1) == 1:
+            email_ = Email(email_smtpserver, email_port, email_sender, email_password,
+                           email_receiver,
+                           email_subject)
+            text = json.dumps(result, ensure_ascii=False).encode("utf8")
+            email_.appendText(text)
+            email_.sendEmail()
+
     result_to_file(result, log, data_type="order")
     nike.close()
 
 
 def run(conf):
     parames = get_parames(conf)
-    user_file = parames.get("user").get("file_name", "")
+    user_file = parames.get("user").get("order", "")
     work_num = parames.get("master").get("work_num", "2")
     if not user_file:
         raise Exception("Please give a user file")
@@ -53,9 +69,8 @@ def run(conf):
         raise Exception("User file no data")
     pool = multiprocessing.Pool(int(work_num))
     for one in user_list:
-        data = one.strip().split("  ")
-        username = data[0]
-        password = data[1]
+        username = json.loads(one).get("response").get("username")
+        password = json.loads(one).get("response").get("password")
         pool.apply_async(target, args=(username, password, parames))
     pool.close()
     pool.join()

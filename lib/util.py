@@ -13,6 +13,12 @@ import os
 import sys
 import json
 import time
+import smtplib
+import logging
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.header import Header
 
 
 def error_result(error_msg=None, error_code=-1):
@@ -66,3 +72,69 @@ def result_to_file(result, log, data_type=""):
         write_file("%s/%s/%s_defeat.txt" % (log, today, data_type), result)
         # with open("%s/%s/%s_defeat.txt" % (log, today, data_type),"a") as f:
         #     f.write(result + "\n")
+
+
+class Email(object):
+    """注意：文件名需加上扩展名，查看邮箱时浏览器可解析显示"""
+
+    # 初始化邮件相关配置
+    def __init__(self, email_smtpserver, email_port, email_sender, email_password, email_receiver,
+                 email_subject):
+        self.__smtpserver = email_smtpserver
+        self.__smtport = email_port
+        self.__sender = email_sender
+        self.__password = email_password
+        self.__receiver = email_receiver
+        self.__subject = email_subject + "    " + \
+                         time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        self.__subject = Header(self.__subject, 'utf-8').encode()
+        self.__msg = MIMEMultipart('mixed')
+        self.__msg['Subject'] = self.__subject
+        self.__msg['From'] = self.__sender
+        self.__msg['To'] = ";".join(self.__receiver)
+
+    # 附加文本内容
+    def appendText(self, text):
+        text_plain = MIMEText(text, 'plain', 'utf-8')
+        self.__msg.attach(text_plain)
+
+    # 附加图片 imgBytes:图片的二进制数据 imgName:图片名称
+    def appendImage(self, imgBytes, imgName):
+        image = MIMEImage(imgBytes)
+        image.add_header('Content-Disposition', 'attachment', filename=imgName)
+        self.__msg.attach(image)
+
+    # 附加html htmlStr:字符串
+    def appendHtml(self, htmlStr, htmlName):
+        text_html = MIMEText(htmlStr, 'html', 'utf-8')
+        text_html.add_header('Content-Disposition',
+                             'attachment', filename=htmlName)
+        self.__msg.attach(text_html)
+
+    # 附加附件
+    def appendAttachment(self, attachName):
+        pass
+
+    # 发送邮件
+    def sendEmail(self):
+        smtp = None
+        try:
+            smtp = smtplib.SMTP_SSL(self.__smtpserver, self.__smtport)
+            smtp.login(self.__sender, self.__password)
+            smtp.sendmail(self.__sender, self.__receiver,
+                          self.__msg.as_string())
+
+        except Exception as e:
+            logging.exception(str(e))
+        try:
+            smtp.quit()
+        except:
+            pass
+
+
+def test_email():
+    pass
+
+
+if __name__ == '__main__':
+    test_email()

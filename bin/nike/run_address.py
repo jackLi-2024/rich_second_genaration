@@ -53,7 +53,7 @@ def target(username, password, parames):
 
 def run(conf):
     parames = get_parames(conf)
-    user_file = parames.get("user").get("file_name", "")
+    user_file = parames.get("user").get("address", "")
     work_num = parames.get("master").get("work_num", "2")
     if not user_file:
         raise Exception("Please give a user file")
@@ -62,9 +62,8 @@ def run(conf):
         raise Exception("User file no data")
     pool = multiprocessing.Pool(int(work_num))
     for one in user_list:
-        data = one.strip().split("  ")
-        username = data[0]
-        password = data[1]
+        username = json.loads(one).get("response").get("username")
+        password = json.loads(one).get("response").get("password")
         pool.apply_async(target, args=(username, password, parames))
     pool.close()
     pool.join()

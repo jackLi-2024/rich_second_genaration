@@ -1,5 +1,5 @@
 [master]
-work_num: 1
+work_num: 2
 process_name: name
 regist_num: 5
 
@@ -18,7 +18,12 @@ log_file: nike
 
 
 [user]
-file_name: ./conf/nike_user.txt
+login: ./conf/nike_user.txt
+address: ./conf/nike_user.txt
+buy: ./conf/nike_user.txt
+# order: ./conf/nike_user.txt
+order: ./data/nike/20190418/order_defeat.txt
+
 
 [url]
 product: ["https://www.nike.com/cn/launch/t/air-max-98-white-teal/"]
@@ -44,6 +49,15 @@ phone: 18404983790
 [regist]
 firstname: Lee
 lastname: Jack
+
+
+[email]
+email_smtpserver: smtp.qq.com
+email_port: 465
+email_sender: 546501664@qq.com
+email_password: agixaxvdxwupbcjb
+email_receiver: ["1050518702@qq.com"]
+email_subject: SNKRS订单
 
 
 
