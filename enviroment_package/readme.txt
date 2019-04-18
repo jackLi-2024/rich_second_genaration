@@ -1,0 +1,3 @@
+安装miniconda2.7
+安装浏览器Chrome
+安装浏览器驱动器driver
