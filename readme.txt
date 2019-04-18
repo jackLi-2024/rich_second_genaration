@@ -12,6 +12,14 @@
 
 3.修改配置文件（nike.conf）
 
+	[user]  用户信息读取文本路径
+	[url] product  需要抢购鞋的链接，可以给多个
+	[size]  鞋码数，可以给多个
+	[address]  自动配送地址
+	[regist]   注册信息的名和姓
+	[email]   邮件信息，主要更改发送者和接受者
+
+
 4.根据需要点击运行脚本
 	windows_run 下面
 
