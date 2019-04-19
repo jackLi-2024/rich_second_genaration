@@ -3,3 +3,4 @@ loggingtool
 SpiderTool
 requests
 multiprocessing
+email
