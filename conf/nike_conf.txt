@@ -6,7 +6,7 @@ regist_num: 5
 
 [browser]
 browser_type: Chrome
-headless: False
+headless: True
 executable_path: None
 timeout: 10
 wait_time: 20

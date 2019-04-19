@@ -37,12 +37,13 @@ def target(username, password, parames):
     url = random.choice(json.loads(parames.get("url").get("product")))
     url_order = parames.get("url").get("order")
     browser_type = parames.get("browser").get("browser_type")
+    executable_path = parames.get("browser").get("executable_path")
     headless = eval(parames.get("browser").get("headless"))
     timeout = parames.get("browser").get("timeout")
     log = parames.get("data").get("log")
     proxies = None
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
-                timeout=timeout, proxies=proxies)
+                timeout=timeout, proxies=proxies, executable_path=executable_path)
     result = nike.login(url=url)
     if result.get("status", -1) == 1:
         result = nike.order(url=url_order)
