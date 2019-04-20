@@ -88,12 +88,11 @@ class Nike(object):
         try:
             # self.browser.get(url)
             # time.sleep(5)
+            self.browser.wait_for_element_loaded("cta-btn", By.CLASS_NAME, wait_time=wait_time)
             self.browser.wait_for_element_loaded("size-grid-button", By.CLASS_NAME,
                                                  wait_time=wait_time)
             sizeEU = self.browser.find_elements("size-grid-button", By.CLASS_NAME)
             # todo:这里需要修改，需要实时验证，把sleep去掉
-            # self.browser.wait_for_element_loaded("cta-btn", By.CLASS_NAME, wait_time=timeout)
-            time.sleep(20)
             hassize = False
             sizenum = ""
             for one in sizeEU:
@@ -184,6 +183,7 @@ class Nike(object):
             address = self.browser.find_element("addresses", By.CLASS_NAME)
             ActionChains(self.browser.browser).move_to_element(address).perform()
             self.browser.click_elem(address)
+            time.sleep(1)
 
             try:
                 self.browser.wait_for_element_loaded("edit-button-container", By.CLASS_NAME,
@@ -199,13 +199,19 @@ class Nike(object):
                 self.browser.click_elem(add_address)
 
             # todo:这里有可能需要加入等待元素加载
+            time.sleep(0.5)
+            self.browser.wait_for_element_loaded("address-lastname", By.ID)
+            self.browser.wait_for_element_loaded("address-firstname", By.ID)
             lastname_elem = self.browser.find_element("address-lastname", By.ID)
             firstname_elem = self.browser.find_element("address-firstname", By.ID)
             self.browser.clear(lastname_elem)
+            time.sleep(0.1)
             self.browser.clear(firstname_elem)
+            time.sleep(0.1)
             self.browser.send_keys(lastname_elem, lastname)
+            time.sleep(0.1)
             self.browser.send_keys(firstname_elem, firstname)
-
+            time.sleep(0.5)
             self.browser.wait_for_element_loaded("state-container", By.CLASS_NAME,
                                                  wait_time=wait_time)
             self.browser.wait_for_element_loaded("city-container", By.CLASS_NAME,
@@ -230,6 +236,7 @@ class Nike(object):
                     break
             time.sleep(0.5)
             city_ = self.browser.find_element("city-container", By.CLASS_NAME)
+            ActionChains(self.browser.browser).move_to_element(city_).perform()
             self.browser.click_elem(city_)
             state_city = self.browser.find_elements(
                 "//div[@class='input-wrapper city-container container1 js-addressCity']/div/ul/li",
@@ -242,6 +249,7 @@ class Nike(object):
                     break
             time.sleep(0.5)
             district_ = self.browser.find_element("district-container", By.CLASS_NAME)
+            ActionChains(self.browser.browser).move_to_element(district_).perform()
             self.browser.click_elem(district_)
             state_district = self.browser.find_elements(
                 "//div[@class='input-wrapper district-container container2 js-addressDistrict']/div/ul/li",
@@ -292,15 +300,6 @@ class Nike(object):
     def regist(self, url, firstname="Lee", lastname="Jack", wait_time=10):
         try:
             self.browser.get(url=url)
-            try:
-                # 应对页面变小，转换为手机页面模式
-
-                self.browser.wait_for_element_loaded(type_name="g72-menu", elem_type=By.CLASS_NAME)
-                menu = self.browser.find_element("g72-menu", By.CLASS_NAME)
-                self.browser.click_elem(menu)
-            except Exception as e:
-                logging.exception(str(e))
-
             self.browser.wait_for_element_loaded(type_name="join-log-in", elem_type=By.CLASS_NAME)
             join_in_elem = self.browser.find_element("join-log-in", By.CLASS_NAME)
             self.browser.click_elem(join_in_elem)
@@ -315,7 +314,6 @@ class Nike(object):
             code_elem = self.browser.find_element("//input[@class='code']", By.XPATH)
             self.browser.send_keys(phone_number_elem, self.username)
             time.sleep(1)
-            self.browser.click_elem(send_code_elem)
             self.browser.click_elem(send_code_elem)
             # 等待验证码
             ticks = 0
@@ -351,19 +349,25 @@ class Nike(object):
 
             register_div_elem = self.browser.find_element("mobileJoinSubmit", By.CLASS_NAME)
             ActionChains(self.browser.browser).move_to_element(register_div_elem).perform()
+            time.sleep(0.1)
             self.browser.send_keys(lastName_elem, lastname)
+            time.sleep(0.1)
             self.browser.send_keys(firstName_elem, firstname)
+            time.sleep(0.1)
             self.browser.send_keys(password_elem, self.password)
+            time.sleep(0.1)
             self.browser.click_elem(man_elem)
+            time.sleep(0.5)
             self.browser.click_elem(register_div_elem)
 
+            time.sleep(5)
             # 填写邮件
             self.browser.wait_for_element_loaded("captureEmailSubmit", elem_type=By.CLASS_NAME)
             email_elem = self.browser.find_element("emailAddress", By.NAME)
             save_elem = self.browser.find_element("captureEmailSubmit", By.CLASS_NAME)
             self.browser.send_keys(email_elem, self.username + "@qq.com")
             self.browser.click_elem(save_elem)
-
+            time.sleep(1)
             # 验证邮件
             self.browser.wait_for_element_loaded("mobileJoinDobEmailSkipButton",
                                                  elem_type=By.CLASS_NAME)
@@ -374,6 +378,7 @@ class Nike(object):
                       "msg": "regist successfully"}
             return normal_result(result)
         except Exception as e:
+            logging.exception(str(e))
             result = {"username": self.username, "password": self.password, "url": url,
                       "msg": "regist defeatly", "error": str(e)}
             return error_result(result)
@@ -383,8 +388,10 @@ def test_login():
     url = "https://www.nike.com/cn/launch/t/react-element-87-volt-racer-pink-aurora/"
     username = "17042071241"
     password = "Zx651324959"
+    # executable_path = "http://167.179.97.68:4444/wd/hub"
+    executable_path = "None"
     nike = Nike(browser_type="Chrome", headless=False, username=username, password=password,
-                timeout=20)
+                timeout=20, executable_path=executable_path)
     login_result = nike.login(url=url)
     print(login_result)
     nike.close()
@@ -394,8 +401,10 @@ def test_buy():
     url = "https://www.nike.com/cn/launch/t/react-element-87-volt-racer-pink-aurora/"
     username = "13691926738"
     password = "Ljc19941108"
+    # executable_path = "http://167.179.97.68:4444/wd/hub"
+    executable_path = "None"
     nike = Nike(browser_type="Chrome", headless=False, username=username, password=password,
-                timeout=20)
+                timeout=20, executable_path=executable_path)
     login_result = nike.login(url=url)
     if login_result.get("status", -1) == 1:
         print(nike.buy(url=url, size=["39"], wait_time=10))
@@ -408,7 +417,7 @@ def test_address():
     url = "https://www.nike.com/cn/launch/t/react-element-87-volt-racer-pink-aurora/"
     username = "13691926738"
     password = "Ljc19941108"
-    url_setting = "https://www.nike.com/cn/zh_cn/p/settings"
+    url_setting = "https://www.nike.com/cn/zh_cn/p/settings?tab=addresses"
     lastname = "jiacai"
     firstname = "li"
     province = u"黑龙江省"
@@ -417,8 +426,10 @@ def test_address():
     # 注意这里要使用unicode
     addressinfo = u"详细地址"
     phone = username
+    # executable_path = "http://167.179.97.68:4444/wd/hub"
+    executable_path = "None"
     nike = Nike(browser_type="Chrome", headless=False, username=username, password=password,
-                timeout=20)
+                timeout=20, executable_path=executable_path)
     login_result = nike.login(url=url)
     if login_result.get("status", -1) == 1:
 
@@ -435,8 +446,10 @@ def test_order():
     url_order = "https://www.nike.com/cn/member/inbox"
     username = "18404983790"
     password = "Ljc19941108"
+    # executable_path = "http://167.179.97.68:4444/wd/hub"
+    executable_path = "None"
     nike = Nike(browser_type="Chrome", headless=False, username=username, password=password,
-                timeout=20)
+                timeout=20, executable_path=executable_path)
     login_result = nike.login(url=url)
     if login_result.get("status", -1) == 1:
         print(json.dumps(nike.order(url=url_order), ensure_ascii=False).encode("utf8"))
@@ -449,8 +462,10 @@ def test_regist():
     url = "https://www.nike.com/cn/launch/t/air-max-95-premium-throwback-future/"
     username = get_phone()
     password = "Snkrs" + username
+    # executable_path = "http://167.179.97.68:4444/wd/hub"
+    executable_path = "None"
     nike = Nike(browser_type="Chrome", headless=False, username=username, password=password,
-                timeout=20)
+                timeout=20, executable_path=executable_path)
     print(nike.regist(url=url))
 
 

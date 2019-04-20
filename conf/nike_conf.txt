@@ -1,12 +1,12 @@
 [master]
-work_num: 2
+work_num: 1
 process_name: name
-regist_num: 5
+regist_num: 1
 
 
 [browser]
 browser_type: Chrome
-headless: True
+headless: False
 executable_path: None
 timeout: 10
 wait_time: 20
