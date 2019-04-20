@@ -5,9 +5,9 @@ regist_num: 1
 
 
 [browser]
-browser_type: Chrome
+browser_type: Remote-Chrome
 headless: False
-executable_path: None
+executable_path: http://167.179.97.68:4444/wd/hub
 timeout: 10
 wait_time: 20
 proxies_file: ./lib/proxy.py
@@ -27,7 +27,7 @@ order: ./data/nike/20190418/order_defeat.txt
 
 [url]
 product: ["https://www.nike.com/cn/launch/t/air-max-98-white-teal/"]
-setting: https://www.nike.com/cn/zh_cn/p/settings
+setting: https://www.nike.com/cn/zh_cn/p/settings?tab=addresses
 order: https://www.nike.com/cn/member/inbox
 
 [size]
