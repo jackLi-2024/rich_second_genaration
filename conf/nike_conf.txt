@@ -60,4 +60,5 @@ email_receiver: ["1050518702@qq.com"]
 email_subject: SNKRS订单
 
 
-
+[interval]
+buy_and_order: 100

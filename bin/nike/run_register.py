@@ -24,7 +24,7 @@ from lib.util import write_file
 from lib.util import mkdir_log
 from lib.get_phone import get_phone
 from lib.util import result_to_file
-
+from lib.proxy import get_proxy
 
 def target(firstname, lastname, parames):
     url = random.choice(json.loads(parames.get("url").get("product")))
@@ -35,7 +35,7 @@ def target(firstname, lastname, parames):
     log = parames.get("data").get("log")
     username = get_phone()
     password = "Snkrs" + username
-    proxies = None
+    proxies = get_proxy()
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
                 timeout=timeout, proxies=proxies, executable_path=executable_path)
     result = nike.regist(url=url, firstname=firstname, lastname=lastname)

@@ -23,7 +23,7 @@ from lib.util import read_file
 from lib.util import write_file
 from lib.util import mkdir_log
 from lib.util import result_to_file
-
+from lib.proxy import get_proxy
 
 def target(username, password, parames):
     url = random.choice(json.loads(parames.get("url").get("product")))
@@ -40,7 +40,7 @@ def target(username, password, parames):
     headless = eval(parames.get("browser").get("headless"))
     timeout = parames.get("browser").get("timeout")
     log = parames.get("data").get("log")
-    proxies = None
+    proxies = get_proxy()
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
                 timeout=timeout, proxies=proxies,executable_path=executable_path)
     result = nike.login(url=url)

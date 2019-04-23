@@ -37,6 +37,8 @@ def target(username, password, parames):
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
                 timeout=timeout, proxies=proxies, executable_path=executable_path)
     result = nike.login(url=url)
+    if result.get("status", -1) == 1:
+        result = nike.order(url=url)
     result_to_file(result, log, data_type="buy")
     nike.close()
 
