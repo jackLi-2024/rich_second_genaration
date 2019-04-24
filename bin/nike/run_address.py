@@ -50,6 +50,7 @@ def target(username, password, parames):
                               city=city, district=district, phone=phone, addressinfo=addressinfo)
     result_to_file(result, log, data_type="address")
     nike.close()
+    return result
 
 
 def run(conf):

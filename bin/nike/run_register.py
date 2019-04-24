@@ -41,6 +41,7 @@ def target(firstname, lastname, parames):
     result = nike.regist(url=url, firstname=firstname, lastname=lastname)
     result_to_file(result, log, data_type="regist")
     nike.close()
+    return result
 
 
 def run(conf):

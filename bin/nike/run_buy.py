@@ -41,6 +41,7 @@ def target(username, password, parames):
         result = nike.order(url=url)
     result_to_file(result, log, data_type="buy")
     nike.close()
+    return result
 
 
 def run(conf):

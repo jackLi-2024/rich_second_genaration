@@ -58,6 +58,7 @@ def target(username, password, parames):
 
     result_to_file(result, log, data_type="order")
     nike.close()
+    return result
 
 
 def run(conf):

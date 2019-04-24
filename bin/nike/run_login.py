@@ -39,6 +39,7 @@ def target(username, password, parames):
     result = nike.login(url=url)
     result_to_file(result, log, data_type="login")
     nike.close()
+    return result
 
 
 def run(conf):
