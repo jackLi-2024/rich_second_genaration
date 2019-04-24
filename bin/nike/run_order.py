@@ -41,13 +41,14 @@ def target(username, password, parames):
     executable_path = parames.get("browser").get("executable_path")
     headless = eval(parames.get("browser").get("headless"))
     timeout = parames.get("browser").get("timeout")
+    wait_time = int(parames.get("browser").get("wait_time","10"))
     log = parames.get("data").get("log")
     proxies = get_proxy()
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
                 timeout=timeout, proxies=proxies, executable_path=executable_path)
     result = nike.login(url=url)
     if result.get("status", -1) == 1:
-        result = nike.order(url=url_order)
+        result = nike.order(url=url_order, wait_time=wait_time)
         if result.get("status", -1) == 1:
             email_ = Email(email_smtpserver, email_port, email_sender, email_password,
                            email_receiver,

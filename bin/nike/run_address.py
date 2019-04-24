@@ -39,6 +39,7 @@ def target(username, password, parames):
     executable_path = parames.get("browser").get("executable_path")
     headless = eval(parames.get("browser").get("headless"))
     timeout = parames.get("browser").get("timeout")
+    wait_time = int(parames.get("browser").get("wait_time","10"))
     log = parames.get("data").get("log")
     proxies = get_proxy()
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
@@ -47,7 +48,7 @@ def target(username, password, parames):
     if result.get("status", -1) == 1:
         result = nike.address(url=url_setting, lastname=lastname, firstname=firstname,
                               province=province,
-                              city=city, district=district, phone=phone, addressinfo=addressinfo)
+                              city=city, district=district, phone=phone, addressinfo=addressinfo, wait_time=wait_time)
     result_to_file(result, log, data_type="address")
     nike.close()
     return result

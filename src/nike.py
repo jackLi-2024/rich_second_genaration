@@ -110,12 +110,14 @@ class Nike(object):
                 result = {"username": self.username, "password": self.password, "url": url,
                           "msg": "No size for the shoe", "error": ""}
                 return error_result(result)
-            # save_button = browser.find_elements_by_class_name("save-button")[0]
-            save_button = self.browser.find_elements("cta-btn", By.CLASS_NAME)[0]
+
+            self.browser.wait_for_element_loaded("cta-btn", By.CLASS_NAME)
+            save_button = self.browser.find_element("cta-btn", By.CLASS_NAME)
             ActionChains(self.browser.browser).move_to_element(save_button).perform()
+            js = "var q=document.documentElement.scrollTop=1000"
+            self.browser.browser.execute_script(js)
             # 得到鞋码数
             save_button.click()
-            self.browser.wait_for_element_loaded("cta-btn", By.CLASS_NAME)
             # 获取配送地址
             addr = self.browser.find_elements("open-close", By.CLASS_NAME)[1]
             self.browser.wait_for_element_loaded("payment-provider-btn", By.CLASS_NAME,

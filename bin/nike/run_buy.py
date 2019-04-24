@@ -28,17 +28,19 @@ from lib.proxy import get_proxy
 
 def target(username, password, parames):
     url = random.choice(json.loads(parames.get("url").get("product")))
+    size = json.loads(parames.get("size").get("size"))
     browser_type = parames.get("browser").get("browser_type")
     executable_path = parames.get("browser").get("executable_path")
     headless = eval(parames.get("browser").get("headless"))
     timeout = parames.get("browser").get("timeout")
+    wait_time = int(parames.get("browser").get("wait_time"))
     log = parames.get("data").get("log")
     proxies = get_proxy()
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
                 timeout=timeout, proxies=proxies, executable_path=executable_path)
     result = nike.login(url=url)
     if result.get("status", -1) == 1:
-        result = nike.buy(url=url)
+        result = nike.buy(url=url,size=size, wait_time=wait_time)
     result_to_file(result, log, data_type="buy")
     nike.close()
     return result

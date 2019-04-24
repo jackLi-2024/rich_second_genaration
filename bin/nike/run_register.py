@@ -32,13 +32,14 @@ def target(firstname, lastname, parames):
     executable_path = parames.get("browser").get("executable_path")
     headless = eval(parames.get("browser").get("headless"))
     timeout = parames.get("browser").get("timeout")
+    wait_time = int(parames.get("browser").get("wait_time","10"))
     log = parames.get("data").get("log")
     username = get_phone()
     password = "Snkrs" + username
     proxies = get_proxy()
     nike = Nike(browser_type=browser_type, headless=headless, username=username, password=password,
                 timeout=timeout, proxies=proxies, executable_path=executable_path)
-    result = nike.regist(url=url, firstname=firstname, lastname=lastname)
+    result = nike.regist(url=url, firstname=firstname, lastname=lastname, wait_time=wait_time)
     result_to_file(result, log, data_type="regist")
     nike.close()
     return result
