@@ -53,6 +53,7 @@ Linux环境（linux_enviroment）：
 
 
 Windows环境：
+        (百度网盘下载enviroment_package   链接：https://pan.baidu.com/s/1Eq7f0QjSMI_LPAkC4eMsUA 提取码：ud7p)
 	step1	.环境安装：
 		命令行执行以下命令：
 			1.下载Miniconda2.7对用系统版本，并安装，注意需要加入环境变量
