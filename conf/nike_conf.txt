@@ -62,3 +62,8 @@ email_subject: SNKRS订单
 
 [interval]
 buy_and_order: 100
+
+
+[login_and_buy_and_order]
+max_user_num: 10
+buy_time: 24:00
