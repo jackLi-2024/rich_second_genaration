@@ -1,6 +1,7 @@
 Linux环境（linux_enviroment）：
 	step1	.环境安装：
 		命令行执行以下命令：
+                        yum -y install gcc
 			pip install -r requirements.txt  (安装Python环境包)
 			deploy --docker-install  (安装docker)
 			deploy --docker-start     (启动docker服务)
